@@ -21,35 +21,52 @@
 //
 // Use your function to create a card for each of the articles, and append each card to the DOM.
 
-
 import axios from "axios";
 
-axios.get("https://lambda-times-api.herokuapp.com/articles")
-.then((res) => {
-    console.log(res)
+axios
+  .get("https://lambda-times-api.herokuapp.com/articles")
+  .then((res) => {
+    const cards = document.querySelector(".cards-container");
+
+    const resDataArticles = res.data.articles;
+    resDataArticles.bootstrap.forEach((item) => {
+      cards.append(cardMaker(item));
+    });
+    resDataArticles.javascript.forEach((item) => {
+      cards.append(cardMaker(item));
+    });
+    resDataArticles.jquery.forEach((item) => {
+      cards.append(cardMaker(item));
+    });
+    resDataArticles.node.js.forEach((item) => {
+      cards.append(cardMaker(item));
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+function cardMaker(obj) {
+  const card = document.createElement("div");
+  const headlineDiv = document.createElement("div");
+  const authorDiv = document.createElement("div");
+  const imgDiv = document.createElement("div");
+  const img = document.createElement("img");
+  const span = document.createElement("span");
+
+  card.classList.add("card");
+  headlineDiv.classList.add("headline");
+  authorDiv.classList.add("author");
+  imgDiv.classList.add("img-container");
+  //   img.classList.add('')
+
+  headlineDiv.textContent = obj.headline;
+  span.textContent = obj.authorName;
+  img.src = obj.authorPhoto;
+
+  imgDiv.append(img);
+  authorDiv.append(imgDiv, span);
+  card.append(headlineDiv, authorDiv);
+
+  return card;
 }
-
-
-function cardMaker(obj){
-    const card = document.createElement("div");
-    const headlineDiv = document.createElement('div');
-    const authorDiv = document.createElement('div');
-    const imgDiv = document.createElement('div');
-    const img = document.createElement('img');
-    const span = document.createElement('span');
-
-    card.classList.add('card');
-    headlineDiv.classList.add('headline');
-    authorDiv.classList.add('author');
-    imgDiv.classList.add('img-container');
-
-    headlineDiv.textContent = obj.headline;
-    span.textContent = obj.authorName;
-    img.src = obj.authorPhoto;
-
-    imgDiv.append(img);
-    card.append(headlineDiv, authorDiv, imgDiv, span);
-
-    return card;
-}
-
