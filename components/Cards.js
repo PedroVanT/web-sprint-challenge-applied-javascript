@@ -28,7 +28,9 @@ axios.get("https://lambda-times-api.herokuapp.com/articles")
 .then((res) => {
     console.log(res)
 }
-
+.catch((error) => {
+    console.log(error)
+});
 
 function cardMaker(obj){
     const card = document.createElement("div");
